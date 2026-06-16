@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK-VPN-FILES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:         #080C10;
+            --surface:    #0D1520;
+            --surface2:   #111B2A;
+            --border:     #1E3A5F;
+            --cyan:       #00D4FF;
+            --cyan-dim:   #00A8CC;
+            --cyan-glow:  rgba(0,212,255,0.18);
+            --cyan-glow2: rgba(0,212,255,0.06);
+            --text:       #E8F4F8;
+            --text-dim:   #7A9BB5;
+            --text-muted: #3A5A78;
+            --red:        #FF3860;
+            --green:      #00FF88;
+            --yellow:     #FFD700;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            color: var(--text);
+            padding-bottom: 80px;
+            position: relative;
+            overflow-x: hidden;
+            background-color: var(--bg);
+        }
+
+        #bg-overlay {
+            position: fixed; inset: 0; z-index: 1;
+            background: linear-gradient(160deg, rgba(8,12,16,0.92) 0%, rgba(8,12,16,0.85) 50%, rgba(8,12,16,0.95) 100%);
+        }
+        body::before {
+            content: ''; position: fixed; inset: 0; z-index: 2; pointer-events: none;
+            background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px);
+        }
+        body::after {
+            content: ''; position: fixed; width: 600px; height: 600px;
+            top: -200px; left: -200px; z-index: 2; pointer-events: none;
+            background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+        @keyframes drift { 0% { transform: translate(0,0); } 100% { transform: translate(80px,60px); } }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px 16px; position: relative; z-index: 10; }
+
+        header {
+            text-align: center; padding: 32px 24px 24px;
+            background: rgba(13,21,32,0.85); backdrop-filter: blur(16px);
+            border-radius: 4px; margin-bottom: 16px;
+            border: 1px solid var(--border); border-top: 2px solid var(--cyan);
+            position: relative; overflow: hidden;
+        }
+        header::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            animation: scan-line 3s ease-in-out infinite;
+        }
+        @keyframes scan-line { 0%,100% { opacity:.4; } 50% { opacity:1; } }
+        .header-tag { font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--text-muted); letter-spacing:3px; text-transform:uppercase; margin-bottom:10px; }
+        .header-tag span { color:var(--cyan); }
+        h1 {
+            font-family:'JetBrains Mono',monospace; font-size:2.2rem; font-weight:700;
+            letter-spacing:8px; color:var(--text);
+            text-shadow: 0 0 10px var(--cyan), 0 0 30px var(--cyan-glow), 0 0 60px rgba(0,212,255,0.08);
+            animation: glitch 6s ease-in-out infinite; position:relative;
+        }
+        h1::before, h1::after { content:attr(data-text); position:absolute; left:0; top:0; width:100%; height:100%; opacity:0; }
+        h1::before { color:var(--red); clip-path:inset(30% 0 50% 0); animation:glitch-top 6s ease-in-out infinite; }
+        h1::after  { color:var(--cyan); clip-path:inset(50% 0 20% 0); animation:glitch-bot 6s ease-in-out infinite; }
+        @keyframes glitch    { 0%,90%,100%{transform:none;} 92%{transform:skewX(-1deg);} 94%{transform:skewX(1deg);} 96%{transform:none;} }
+        @keyframes glitch-top{ 0%,90%,100%{opacity:0;transform:none;} 92%{opacity:.6;transform:translate(-2px,0);} 94%{opacity:0;} }
+        @keyframes glitch-bot{ 0%,91%,100%{opacity:0;transform:none;} 93%{opacity:.5;transform:translate(2px,0);}  95%{opacity:0;} }
+        .subtitle { font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--cyan); letter-spacing:4px; text-transform:uppercase; margin-top:8px; opacity:.85; }
+        .header-stats { display:flex; justify-content:center; gap:32px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
+        .stat { font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--text-muted); text-align:center; }
+        .stat-val { display:block; font-size:1.1rem; font-weight:600; color:var(--cyan); margin-bottom:2px; }
+
+        .tabs {
+            display: flex; gap: 4px; margin-bottom: 16px;
+            background: rgba(13,21,32,0.85); backdrop-filter: blur(10px);
+            border: 1px solid var(--border); border-radius: 4px; padding: 6px;
+        }
+        .tab-btn {
+            flex: 1; padding: 10px 8px;
+            background: transparent; border: 1px solid transparent;
+            border-radius: 3px; cursor: pointer;
+            font-family: 'JetBrains Mono', monospace; font-size: .72rem;
+            font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+            color: var(--text-muted); transition: all 0.2s ease;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .tab-btn:hover { color: var(--text-dim); border-color: var(--border); }
+        .tab-btn.active {
+            color: var(--bg); background: var(--cyan); border-color: var(--cyan);
+            box-shadow: 0 0 16px var(--cyan-glow), 0 0 30px rgba(0,212,255,0.1);
+        }
+        .tab-badge {
+            font-size: .6rem; background: rgba(0,212,255,0.15); color: var(--cyan);
+            border-radius: 2px; padding: 1px 5px; min-width: 18px; text-align: center;
+        }
+        .tab-btn.active .tab-badge { background: rgba(8,12,16,0.3); color: var(--bg); }
+
+        .search-container { position:relative; margin-bottom:16px; }
+        .search-input {
+            width:100%; padding:13px 18px 13px 46px;
+            background:var(--surface); border:1px solid var(--border); border-radius:4px;
+            color:var(--text); font-family:'JetBrains Mono',monospace; font-size:.88rem;
+            outline:none; transition:all .25s ease; letter-spacing:.5px;
+        }
+        .search-input::placeholder { color:var(--text-muted); }
+        .search-input:focus { border-color:var(--cyan); box-shadow:0 0 0 1px var(--cyan),0 0 20px var(--cyan-glow); background:var(--surface2); }
+        .search-icon { position:absolute; left:15px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:1.1rem; pointer-events:none; transition:color .25s; }
+        .search-container:focus-within .search-icon { color:var(--cyan); }
+
+        .file-count {
+            font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--text-muted);
+            letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; padding:0 4px;
+            display:flex; align-items:center; gap:8px;
+        }
+        .file-count::before { content:''; display:inline-block; width:20px; height:1px; background:var(--border); }
+
+        .files-list { display:flex; flex-direction:column; gap:8px; }
+        .file-card {
+            background:rgba(13,21,32,0.80); backdrop-filter:blur(10px);
+            border:1px solid var(--border); border-radius:4px; padding:14px 16px;
+            display:flex; align-items:center; gap:14px;
+            transition:border-color .2s, box-shadow .2s, transform .2s, background .2s;
+            position:relative; overflow:hidden;
+        }
+        .file-card::before {
+            content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+            background:var(--border); transition:background .2s, box-shadow .2s;
+        }
+        .file-card:hover { border-color:rgba(0,212,255,0.4); background:rgba(13,21,32,0.92); box-shadow:0 0 20px var(--cyan-glow2); transform:translateX(3px); }
+        .file-card:hover::before { background:var(--cyan); box-shadow:0 0 10px var(--cyan); }
+
+        .file-icon { width:40px; height:40px; border:1px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:var(--surface2); transition:all .25s; }
+        .file-card:hover .file-icon { border-color:var(--cyan); box-shadow:0 0 12px var(--cyan-glow); }
+        .file-icon svg { width:20px; height:20px; color:var(--cyan); }
+
+        .file-info { flex:1; min-width:0; overflow:hidden; }
+        .file-name { font-size:.92rem; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition:color .2s; }
+        .file-card:hover .file-name { color:var(--cyan); }
+        .file-meta { font-family:'JetBrains Mono',monospace; font-size:.65rem; color:var(--text-muted); letter-spacing:1px; margin-top:3px; }
+        .file-meta .time-ago { color: var(--yellow); }
+
+        .file-actions { display:flex; gap:8px; flex-shrink:0; }
+        .btn {
+            padding:8px 16px; border:none; border-radius:3px; cursor:pointer;
+            font-family:'JetBrains Mono',monospace; font-size:.75rem; font-weight:600;
+            letter-spacing:1px; transition:all .2s ease; display:flex; align-items:center;
+            gap:6px; text-decoration:none; white-space:nowrap;
+        }
+        .btn-download { background:transparent; color:var(--cyan); border:1px solid var(--cyan); }
+        .btn-download:hover { background:var(--cyan); color:var(--bg); box-shadow:0 0 20px var(--cyan-glow); }
+        .btn-download svg { width:14px; height:14px; flex-shrink:0; }
+
+        .loading { text-align:center; padding:50px 20px; color:var(--text-muted); font-family:'JetBrains Mono',monospace; font-size:.8rem; letter-spacing:1px; }
+        .spinner { display:inline-block; width:28px; height:28px; border:1px solid var(--border); border-top-color:var(--cyan); border-radius:50%; animation:spin .9s linear infinite; margin-bottom:14px; box-shadow:0 0 10px var(--cyan-glow); }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .empty-state { text-align:center; padding:50px 20px; font-family:'JetBrains Mono',monospace; color:var(--text-muted); font-size:.8rem; }
+        .empty-state-icon { font-size:2.5rem; margin-bottom:14px; opacity:.4; }
+        .empty-state h3 { color:var(--text-dim); margin-bottom:8px; font-size:.9rem; }
+
+        .site-footer {
+            text-align: center;
+            padding: 24px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid var(--border);
+            margin-top: 24px;
+            position: relative;
+            z-index: 10;
+        }
+        .site-footer span { color: var(--cyan); opacity: .7; }
+
+        @media (max-width:640px) {
+            h1 { font-size:1.6rem; letter-spacing:4px; }
+            .header-stats { gap:14px; flex-wrap:wrap; justify-content:center; }
+            .btn { padding:7px 12px; font-size:.7rem; }
+            .tab-btn { font-size:.65rem; letter-spacing:1px; padding:9px 4px; }
+        }
+        @media (max-width:420px) {
+            .file-actions { flex-direction:column; gap:5px; }
+        }
+        @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
+    </style>
+</head>
+<body>
+    <div id="bg-overlay"></div>
+
+    <div class="container">
+        <header>
+            <div class="header-tag">[ <span>sys://mkdev.vpn</span> ] — initialized</div>
+            <h1 data-text="MK-VPN-FILES">MK-VPN-FILES</h1>
+            <p class="subtitle">TLS · HAT · HC</p>
+            <div class="header-stats">
+                <div class="stat"><span class="stat-val" id="statTotal">—</span>files loaded</div>
+                <div class="stat"><span class="stat-val" id="statNow">—</span>category</div>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tls" onclick="switchTab('tls')">
+                TLS <span class="tab-badge" id="badge-tls">0</span>
+            </button>
+            <button class="tab-btn" data-tab="hat" onclick="switchTab('hat')">
+                HAT <span class="tab-badge" id="badge-hat">0</span>
+            </button>
+            <button class="tab-btn" data-tab="hc" onclick="switchTab('hc')">
+                HC <span class="tab-badge" id="badge-hc">0</span>
+            </button>
+        </div>
+
+        <div class="search-container">
+            <span class="search-icon">⌕</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="search config files...">
+        </div>
+
+        <div class="file-count" id="fileCount">scanning repository...</div>
+        <div class="files-list" id="filesList">
+            <div class="loading"><div class="spinner"></div><p>connecting to GitHub API...</p></div>
+        </div>
+
+        <footer class="site-footer"><span>©2026 MKDEV</span></footer>
+    </div>
+
+    <script>
+    // ── CONFIG ────────────────────────────────────────────────────────
+    const CONFIG = {
+        owner: 'Charles2339',
+        repo:  'VPNFILES',
+        branch: 'main'
+    };
+
+    // ── CATEGORIES ───────────────────────────────────────────────────
+    const CATEGORIES = {
+        tls: { folder: 'TLS',  ext: '.tls', label: 'TLS Tunnel' },
+        hat: { folder: 'HAT',  ext: '.hat', label: 'HA Tunnel Plus' },
+        hc:  { folder: 'HC',   ext: '.hc',  label: 'HTTP Custom' },
+    };
+    const allFiles = { tls: [], hat: [], hc: [] };
+    let activeTab = 'tls';
+    let files = [];
+
+    const searchInput = document.getElementById('searchInput');
+    const filesList   = document.getElementById('filesList');
+    const fileCount   = document.getElementById('fileCount');
+    const statTotal   = document.getElementById('statTotal');
+    const statNow     = document.getElementById('statNow');
+
+    // ── TIME AGO ─────────────────────────────────────────────────────
+    function timeAgo(dateStr) {
+        const date = new Date(dateStr);
+        const now = new Date();
+        const seconds = Math.floor((now - date) / 1000);
+        if (seconds < 60) return 'just now';
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return minutes + 'm ago';
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return hours + 'h ago';
+        const days = Math.floor(hours / 24);
+        if (days < 30) return days + 'd ago';
+        const months = Math.floor(days / 30);
+        if (months < 12) return months + 'mo ago';
+        return Math.floor(months / 12) + 'y ago';
+    }
+
+    function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
+
+    // ── FETCH FROM GITHUB API ────────────────────────────────────────
+    async function fetchRepoContents(path) {
+        const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`;
+        const res = await fetch(url);
+        if (res.status === 403) {
+            throw new Error('API rate limit exceeded. Try again in ~1 hour, or reload the page.');
+        }
+        if (res.status === 404) {
+            return [];
+        }
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
+        return await res.json();
+    }
+
+    async function fetchCommitDate(path) {
+        const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/commits?path=${encodeURIComponent(path)}&per_page=1`;
+        try {
+            const res = await fetch(url);
+            if (!res.ok) return null;
+            const data = await res.json();
+            if (data && data.length > 0) {
+                return data[0].commit.committer.date;
+            }
+            return null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    async function loadCategory(key) {
+        const cat = CATEGORIES[key];
+        const contents = await fetchRepoContents(cat.folder);
+        if (!Array.isArray(contents)) {
+            allFiles[key] = [];
+            return;
+        }
+
+        const fileItems = contents.filter(item => 
+            item.type === 'file' && item.name.toLowerCase().endsWith(cat.ext.toLowerCase())
+        );
+
+        const filesWithDates = await Promise.all(
+            fileItems.map(async (item) => {
+                const commitDate = await fetchCommitDate(item.path);
+                return {
+                    name: item.name.replace(cat.ext, ''),
+                    fullName: item.name,
+                    path: item.path,
+                    downloadUrl: item.download_url,
+                    htmlUrl: item.html_url,
+                    size: item.size,
+                    date: commitDate || item.sha,
+                    dateStr: commitDate ? formatDate(commitDate) : 'unknown',
+                    timeAgo: commitDate ? timeAgo(commitDate) : 'unknown'
+                };
+            })
+        );
+
+        filesWithDates.sort((a, b) => {
+            if (a.date === 'unknown' || b.date === 'unknown') return 0;
+            return new Date(b.date) - new Date(a.date);
+        });
+
+        allFiles[key] = filesWithDates;
+    }
+
+    async function loadAllCategories() {
+        let errorMsg = null;
+        await Promise.all(
+            Object.keys(CATEGORIES).map(async (key) => {
+                try {
+                    await loadCategory(key);
+                } catch (e) {
+                    errorMsg = e.message;
+                }
+                document.getElementById('badge-' + key).textContent = allFiles[key].length;
+            })
+        );
+
+        files = allFiles[activeTab];
+        const total = Object.values(allFiles).reduce((s, a) => s + a.length, 0);
+        statTotal.textContent = total;
+        statNow.textContent = CATEGORIES[activeTab].label;
+
+        if (errorMsg) {
+            fileCount.innerHTML = `<span style="color:var(--red)">⚠ ${escapeHtml(errorMsg)}</span>`;
+        }
+
+        displayFiles(files);
+    }
+
+    function switchTab(tab) {
+        activeTab = tab;
+        files = allFiles[tab];
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+        searchInput.value = '';
+        statNow.textContent = CATEGORIES[activeTab].label;
+        displayFiles(files);
+    }
+
+    function escapeHtml(t) { 
+        const d = document.createElement('div'); 
+        d.textContent = t; 
+        return d.innerHTML; 
+    }
+
+    function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+        return (bytes/(1024*1024)).toFixed(1) + ' MB';
+    }
+
+    function displayFiles(list) {
+        if (!list.length) {
+            filesList.innerHTML = `<div class="empty-state"><div class="empty-state-icon">&#9678;</div><h3>No files</h3><p>${allFiles[activeTab].length ? 'Refine your search.' : activeTab.toUpperCase() + ' folder empty or no ' + CATEGORIES[activeTab].ext + ' files found.'}</p></div>`;
+            fileCount.textContent = '0 files found';
+            return;
+        }
+        const cat = CATEGORIES[activeTab];
+        filesList.innerHTML = list.map((file, i) => {
+            const rawUrl = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/${CONFIG.branch}/${encodeURIComponent(file.path)}`;
+            return `
+            <div class="file-card" data-index="${i}">
+                <div class="file-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">${escapeHtml(file.name)}</div>
+                    <div class="file-meta">${cat.ext.toUpperCase().slice(1)} · ${cat.label} · ${formatSize(file.size)} · <span class="time-ago">${escapeHtml(file.timeAgo)}</span> · ${escapeHtml(file.dateStr)}</div>
+                </div>
+                <div class="file-actions">
+                    <a href="${rawUrl}" download="${escapeHtml(file.fullName)}" class="btn btn-download" title="Download ${escapeHtml(file.fullName)}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M6 11l6 6 6-6"/><path d="M3 20h18"/></svg>
+                        SAVE
+                    </a>
+                </div>
+            </div>`;
+        }).join('');
+        fileCount.textContent = `${list.length} file${list.length !== 1 ? 's' : ''} indexed`;
+    }
+
+    searchInput.addEventListener('input', e => {
+        const q = e.target.value.toLowerCase().trim();
+        displayFiles(q ? files.filter(f => f.name.toLowerCase().includes(q)) : files);
+    });
+
+    setInterval(() => {
+        loadAllCategories();
+    }, 300000);
+
+    loadAllCategories();
+    </script>
+</body>
+  </html> 
