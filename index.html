@@ -188,6 +188,37 @@
         }
         .site-footer span { color: var(--cyan); opacity: .7; }
 
+        /* ── ADS ─────────────────────────────────────────────────────── */
+        .ad-native-banner { margin-bottom: 16px; min-height: 90px; }
+        
+        .ad-sidebar {
+            position: fixed;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            width: 160px;
+            height: 300px;
+            background: rgba(13,21,32,0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .ad-sidebar-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .5rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1200px) {
+            .ad-sidebar { display: none; }
+        }
         @media (max-width:640px) {
             h1 { font-size:1.6rem; letter-spacing:4px; }
             .header-stats { gap:14px; flex-wrap:wrap; justify-content:center; }
@@ -199,10 +230,25 @@
         }
         @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
     </style>
-    <script src="https://pl29752263.effectivecpmnetwork.com/75/21/11/75211136398478c8a0761bd72b8f5778.js"></script>
+    <script src="https://pl29840223.effectivecpmnetwork.com/1d/16/1b/1d161b8f1e0206b4ec9aff17db0bac2d.js"></script>
 </head>
 <body>
     <div id="bg-overlay"></div>
+
+    <!-- Banner 160x300 — Fixed Sidebar (desktop only) -->
+    <div class="ad-sidebar">
+        <div class="ad-sidebar-label">Ad</div>
+        <script>
+          atOptions = {
+            'key' : 'ebe10f956b890f80a552a059463a355d',
+            'format' : 'iframe',
+            'height' : 300,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/ebe10f956b890f80a552a059463a355d/invoke.js"></script>
+    </div>
 
     <div class="container">
         <header>
@@ -232,10 +278,10 @@
             <input type="text" class="search-input" id="searchInput" placeholder="search config files...">
         </div>
 
-        <!-- Adsterra Native Banner -->
-        <div style="margin-bottom:16px; min-height:90px;">
-            <script async="async" data-cfasync="false" src="https://pl29752262.effectivecpmnetwork.com/bbc801c95e3857b70542a0356d45ad23/invoke.js"></script>
-            <div id="container-bbc801c95e3857b70542a0356d45ad23"></div>
+        <!-- Native Banner -->
+        <div class="ad-native-banner">
+            <script async="async" data-cfasync="false" src="https://pl29840224.effectivecpmnetwork.com/bd4fc9b56d72f4af23cc2b0026aa437a/invoke.js"></script>
+            <div id="container-bd4fc9b56d72f4af23cc2b0026aa437a"></div>
         </div>
 
         <div class="file-count" id="fileCount">scanning repository...</div>
@@ -459,7 +505,6 @@
             if (!response.ok) throw new Error('Failed to fetch');
             const blob = await response.blob();
 
-            // Force correct MIME type so browser saves with right extension
             const mimeType = getMimeType(filename);
             const typedBlob = new Blob([blob], { type: mimeType });
 
@@ -471,7 +516,6 @@
             document.body.appendChild(a);
             a.click();
 
-            // Small delay before cleanup to ensure download starts
             setTimeout(() => {
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(blobUrl);
