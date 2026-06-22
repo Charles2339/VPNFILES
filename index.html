@@ -191,34 +191,15 @@
         /* ── ADS ─────────────────────────────────────────────────────── */
         .ad-native-banner { margin-bottom: 16px; min-height: 90px; }
         
-        .ad-sidebar {
-            position: fixed;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            width: 160px;
-            height: 300px;
-            background: rgba(13,21,32,0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
+        .ad-mid-content {
+            margin: 12px 0;
+            min-height: 90px;
+            background: rgba(13,21,32,0.60);
+            border: 1px dashed var(--border);
             border-radius: 4px;
-            overflow: hidden;
-        }
-        .ad-sidebar-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .5rem;
-            color: var(--text-muted);
-            text-align: center;
-            padding: 4px 0;
-            border-bottom: 1px solid var(--border);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            padding: 8px;
         }
 
-        @media (max-width: 1200px) {
-            .ad-sidebar { display: none; }
-        }
         @media (max-width:640px) {
             h1 { font-size:1.6rem; letter-spacing:4px; }
             .header-stats { gap:14px; flex-wrap:wrap; justify-content:center; }
@@ -234,21 +215,6 @@
 </head>
 <body>
     <div id="bg-overlay"></div>
-
-    <!-- Banner 160x300 — Fixed Sidebar (desktop only) -->
-    <div class="ad-sidebar">
-        <div class="ad-sidebar-label">Ad</div>
-        <script>
-          atOptions = {
-            'key' : 'ebe10f956b890f80a552a059463a355d',
-            'format' : 'iframe',
-            'height' : 300,
-            'width' : 160,
-            'params' : {}
-          };
-        </script>
-        <script src="https://www.highperformanceformat.com/ebe10f956b890f80a552a059463a355d/invoke.js"></script>
-    </div>
 
     <div class="container">
         <header>
@@ -278,7 +244,7 @@
             <input type="text" class="search-input" id="searchInput" placeholder="search config files...">
         </div>
 
-        <!-- Native Banner -->
+        <!-- Native Banner 1 — Top -->
         <div class="ad-native-banner">
             <script async="async" data-cfasync="false" src="https://pl29840224.effectivecpmnetwork.com/bd4fc9b56d72f4af23cc2b0026aa437a/invoke.js"></script>
             <div id="container-bd4fc9b56d72f4af23cc2b0026aa437a"></div>
@@ -287,6 +253,12 @@
         <div class="file-count" id="fileCount">scanning repository...</div>
         <div class="files-list" id="filesList">
             <div class="loading"><div class="spinner"></div><p>connecting to the server...</p></div>
+        </div>
+
+        <!-- Native Banner 2 — Mid Content -->
+        <div class="ad-mid-content" id="adMidContent" style="display:none;">
+            <script async="async" data-cfasync="false" src="https://pl29840224.effectivecpmnetwork.com/bd4fc9b56d72f4af23cc2b0026aa437a/invoke.js"></script>
+            <div id="container-bd4fc9b56d72f4af23cc2b0026aa437a-mid"></div>
         </div>
 
         <footer class="site-footer"><span>©2026 MKDEV</span></footer>
@@ -315,6 +287,7 @@
     const fileCount   = document.getElementById('fileCount');
     const statTotal   = document.getElementById('statTotal');
     const statNow     = document.getElementById('statNow');
+    const adMidContent = document.getElementById('adMidContent');
 
     // ── TIME AGO ─────────────────────────────────────────────────────
     function timeAgo(dateStr) {
@@ -469,12 +442,27 @@
         if (!list.length) {
             filesList.innerHTML = `<div class="empty-state"><div class="empty-state-icon">&#9678;</div><h3>No files</h3><p>${allFiles[activeTab].length ? 'Refine your search.' : activeTab.toUpperCase() + ' folder empty or no ' + CATEGORIES[activeTab].ext + ' files found.'}</p></div>`;
             fileCount.textContent = '0 files found';
+            adMidContent.style.display = 'none';
             return;
         }
+        
         const cat = CATEGORIES[activeTab];
-        filesList.innerHTML = list.map((file, i) => {
+        const midPoint = Math.floor(list.length / 2);
+        
+        let html = '';
+        list.forEach((file, i) => {
             const rawUrl = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/${CONFIG.branch}/${encodeURIComponent(file.path)}`;
-            return `
+            
+            // Insert mid-content ad after halfway point
+            if (i === midPoint && list.length > 3) {
+                html += `
+                <div class="ad-mid-content">
+                    <script async="async" data-cfasync="false" src="https://pl29840224.effectivecpmnetwork.com/bd4fc9b56d72f4af23cc2b0026aa437a/invoke.js"><\/script>
+                    <div id="container-bd4fc9b56d72f4af23cc2b0026aa437a-mid-${i}"></div>
+                </div>`;
+            }
+            
+            html += `
             <div class="file-card" data-index="${i}">
                 <div class="file-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -490,7 +478,9 @@
                     </button>
                 </div>
             </div>`;
-        }).join('');
+        });
+        
+        filesList.innerHTML = html;
         fileCount.textContent = `${list.length} file${list.length !== 1 ? 's' : ''} indexed`;
     }
 
