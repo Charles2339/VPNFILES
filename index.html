@@ -7,6 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- ExoClick Ad Script -->
+    <script async type="application/javascript" src="https://a.pemsrv.com/ad-provider.js"></script>
+    
     <style>
         :root {
             --bg:         #080C10;
@@ -340,6 +344,37 @@
             font-weight: 600;
         }
 
+        /* ── EXOCLICK AD CONTAINER ─────────────────────────────────── */
+        .exoclick-ad-container {
+            background: rgba(13,21,32,0.60);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 16px;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .exoclick-ad-container::before {
+            content: 'ADVERTISEMENT';
+            position: absolute;
+            top: 4px;
+            left: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            opacity: 0.5;
+        }
+        .exoclick-ad-container ins {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
         .loading { text-align:center; padding:50px 20px; color:var(--text-muted); font-family:'JetBrains Mono',monospace; font-size:.8rem; letter-spacing:1px; }
         .spinner { display:inline-block; width:28px; height:28px; border:1px solid var(--border); border-top-color:var(--cyan); border-radius:50%; animation:spin .9s linear infinite; margin-bottom:14px; box-shadow:0 0 10px var(--cyan-glow); }
         @keyframes spin { to { transform:rotate(360deg); } }
@@ -427,6 +462,12 @@
         <div class="ad-native-banner">
             <script async="async" data-cfasync="false" src="https://examinerashtrayquizmaster.com/bd4fc9b56d72f4af23cc2b0026aa437a/invoke.js"></script>
             <div id="container-bd4fc9b56d72f4af23cc2b0026aa437a"></div>
+        </div>
+
+        <!-- ExoClick Ad Container — Top -->
+        <div class="exoclick-ad-container">
+            <ins class="eas6a97888e33" data-zoneid="5959252"></ins>
+            <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
         </div>
 
         <div class="file-count" id="fileCount">scanning repository...</div>
@@ -802,3 +843,4 @@
     </script>
 </body>
 </html>
+ 
