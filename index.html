@@ -171,7 +171,7 @@
         .btn-download:hover { background:var(--cyan); color:var(--bg); box-shadow:0 0 20px var(--cyan-glow); }
         .btn-download svg { width:14px; height:14px; flex-shrink:0; }
 
-        /* 鈹€鈹€ LOCKED FILE CARD 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+        /* ── LOCKED FILE CARD ───────────────────────────────────────── */
         .file-card.locked {
             border-color: rgba(255,149,0,0.3);
             background: rgba(13,21,32,0.85);
@@ -192,7 +192,7 @@
         .file-card.locked .file-icon svg { color: var(--orange); }
         .file-card.locked .file-name { color: var(--orange); }
         .file-card.locked:hover .file-name { text-shadow: 0 0 12px var(--orange-glow); }
-        
+
         .btn-unlock {
             background: transparent;
             color: var(--orange);
@@ -218,7 +218,7 @@
         }
         .btn-unlock svg { width: 14px; height: 14px; flex-shrink: 0; }
 
-        /* 鈹€鈹€ UNLOCKING OVERLAY 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+        /* ── UNLOCKING OVERLAY ─────────────────────────────────────── */
         .unlock-overlay {
             position: fixed;
             inset: 0;
@@ -234,7 +234,7 @@
             text-align: center;
         }
         .unlock-overlay.active { display: flex; }
-        
+
         .unlock-spinner {
             width: 48px;
             height: 48px;
@@ -244,7 +244,7 @@
             animation: spin 1s linear infinite;
             box-shadow: 0 0 20px var(--orange-glow);
         }
-        
+
         .unlock-title {
             font-family: 'JetBrains Mono', monospace;
             font-size: 1.1rem;
@@ -258,7 +258,7 @@
             0%, 100% { opacity: 0.7; }
             50% { opacity: 1; text-shadow: 0 0 20px var(--orange-glow); }
         }
-        
+
         .unlock-dots {
             display: flex;
             gap: 6px;
@@ -279,7 +279,7 @@
             0%, 80%, 100% { opacity: 0.3; transform: scale(1); }
             40% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 8px var(--orange); }
         }
-        
+
         .unlock-message {
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
@@ -296,7 +296,7 @@
             color: var(--orange);
             font-weight: 600;
         }
-        
+
         .unlock-hint {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.6rem;
@@ -306,7 +306,7 @@
             margin-top: 8px;
         }
 
-        /* 鈹€鈹€ SMARTLINK CARD 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+        /* ── SMARTLINK CARD ─────────────────────────────────────────── */
         .smartlink-card {
             background: rgba(13,21,32,0.80); backdrop-filter: blur(10px);
             border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px;
@@ -364,6 +364,62 @@
 
         .ad-native-banner { margin-bottom: 16px; min-height: 90px; }
 
+        /* ── FULL SCREEN AD OVERLAY ─────────────────────────────────── */
+        .fullscreen-ad-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(8,12,16,0.98);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .fullscreen-ad-overlay.active { display: flex; }
+        .fullscreen-ad-overlay .ad-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,56,96,0.2);
+            border: 1px solid var(--red);
+            color: var(--red);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all .2s ease;
+            z-index: 10001;
+        }
+        .fullscreen-ad-overlay .ad-close-btn:hover {
+            background: var(--red);
+            color: var(--bg);
+        }
+        .fullscreen-ad-overlay .ad-container {
+            width: 100%;
+            max-width: 728px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(13,21,32,0.5);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 20px;
+        }
+        .fullscreen-ad-overlay .ad-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
         @media (max-width:640px) {
             h1 { font-size:1.6rem; letter-spacing:4px; }
             .header-stats { gap:14px; flex-wrap:wrap; justify-content:center; }
@@ -377,10 +433,20 @@
         }
         @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
     </style>
-    <script src="https://examinerashtrayquizmaster.com/1d/16/1b/1d161b8f1e0206b4ec9aff17db0bac2d.js"></script>
 </head>
 <body>
     <div id="bg-overlay"></div>
+
+    <!-- Full Screen Ad Overlay -->
+    <div class="fullscreen-ad-overlay" id="fullscreenAdOverlay">
+        <button class="ad-close-btn" onclick="closeFullscreenAd()">✕ CLOSE AD</button>
+        <div class="ad-label">Sponsored Content</div>
+        <div class="ad-container">
+            <script async type="application/javascript" src="https://a.pemsrv.com/ad-provider.js"></script>
+            <ins class="eas6a97888e33" data-zoneid="5959252"></ins>
+            <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+        </div>
+    </div>
 
     <!-- Unlocking Overlay -->
     <div class="unlock-overlay" id="unlockOverlay">
@@ -397,12 +463,12 @@
 
     <div class="container">
         <header>
-            <div class="header-tag">[ <span>sys://mkdev.vpn</span> ] 鈥� initialized</div>
+            <div class="header-tag">[ <span>sys://mkdev.vpn</span> ] — initialized</div>
             <h1 data-text="MK-VPN-FILES">MK-VPN-FILES</h1>
-            <p class="subtitle">HC 路 TLS 路 HAT</p>
+            <p class="subtitle">HC · TLS · HAT</p>
             <div class="header-stats">
-                <div class="stat"><span class="stat-val" id="statTotal">鈥�</span>files loaded</div>
-                <div class="stat"><span class="stat-val" id="statNow">鈥�</span>category</div>
+                <div class="stat"><span class="stat-val" id="statTotal">—</span>files loaded</div>
+                <div class="stat"><span class="stat-val" id="statNow">—</span>category</div>
             </div>
         </header>
 
@@ -419,11 +485,11 @@
         </div>
 
         <div class="search-container">
-            <span class="search-icon">鈱�</span>
+            <span class="search-icon">⌕</span>
             <input type="text" class="search-input" id="searchInput" placeholder="search config files...">
         </div>
 
-        <!-- Native Banner 鈥� Top -->
+        <!-- Native Banner — Top -->
         <div class="ad-native-banner">
             <script async="async" data-cfasync="false" src="https://examinerashtrayquizmaster.com/bd4fc9b56d72f4af23cc2b0026aa437a/invoke.js"></script>
             <div id="container-bd4fc9b56d72f4af23cc2b0026aa437a"></div>
@@ -434,11 +500,11 @@
             <div class="loading"><div class="spinner"></div><p>connecting to the server...</p></div>
         </div>
 
-        <footer class="site-footer"><span>漏2026 MKDEV</span></footer>
+        <footer class="site-footer"><span>©2026 MKDEV</span></footer>
     </div>
 
     <script>
-    // 鈹€鈹€ CONFIG 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+    // ── CONFIG ────────────────────────────────────────────────────────
     const CONFIG = {
         owner: 'Charles2339',
         repo:  'VPNFILES',
@@ -453,7 +519,7 @@
         'VODACOM & TELKOM & RAIN VPS UDP.hc': 'https://appsave.online/fl/z3z26'
     };
 
-    // 鈹€鈹€ CATEGORIES 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+    // ── CATEGORIES ───────────────────────────────────────────────────
     const CATEGORIES = {
         hc:  { folder: 'HC',   ext: '.hc',  label: 'HTTP Custom' },
         tls: { folder: 'TLS',  ext: '.tls', label: 'TLS Tunnel' },
@@ -469,8 +535,34 @@
     const statTotal   = document.getElementById('statTotal');
     const statNow     = document.getElementById('statNow');
     const unlockOverlay = document.getElementById('unlockOverlay');
+    const fullscreenAdOverlay = document.getElementById('fullscreenAdOverlay');
 
-    // 鈹€鈹€ TIME AGO 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+    // ── FULL SCREEN AD FUNCTIONS ──────────────────────────────────────
+    function showFullscreenAd() {
+        fullscreenAdOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        // Re-trigger ad serve when shown
+        if (window.AdProvider) {
+            window.AdProvider.push({"serve": {}});
+        }
+    }
+
+    function closeFullscreenAd() {
+        fullscreenAdOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Show fullscreen ad on first user interaction (click anywhere)
+    let adShown = false;
+    function showAdOnInteraction() {
+        if (!adShown) {
+            adShown = true;
+            showFullscreenAd();
+        }
+    }
+    document.addEventListener('click', showAdOnInteraction, { once: true });
+
+    // ── TIME AGO ─────────────────────────────────────────────────────
     function timeAgo(dateStr) {
         const date = new Date(dateStr);
         const now = new Date();
@@ -492,7 +584,8 @@
         return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' });
     }
 
-    // 鈹€鈹€ FETCH FROM GITHUB API 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+    // ── FETCH FROM GITHUB API ────────────────────────────────────────
+    // FIXED: Recursively fetch all files from folders and subfolders
     async function fetchRepoContents(path) {
         const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`;
         const res = await fetch(url);
@@ -506,6 +599,26 @@
             throw new Error(`HTTP ${res.status}`);
         }
         return await res.json();
+    }
+
+    // FIXED: Recursively collect all files from a folder path
+    async function collectAllFiles(path) {
+        const items = await fetchRepoContents(path);
+        if (!Array.isArray(items)) return [];
+
+        let allFileItems = [];
+
+        for (const item of items) {
+            if (item.type === 'file') {
+                allFileItems.push(item);
+            } else if (item.type === 'dir') {
+                // Recursively fetch files from subdirectories
+                const subFiles = await collectAllFiles(item.path);
+                allFileItems = allFileItems.concat(subFiles);
+            }
+        }
+
+        return allFileItems;
     }
 
     async function fetchCommitDate(path) {
@@ -525,13 +638,12 @@
 
     async function loadCategory(key) {
         const cat = CATEGORIES[key];
-        const contents = await fetchRepoContents(cat.folder);
-        if (!Array.isArray(contents)) {
-            allFiles[key] = [];
-            return;
-        }
 
-        const fileItems = contents.filter(item => 
+        // FIXED: Use recursive collection to get files from all subfolders
+        const allItems = await collectAllFiles(cat.folder);
+
+        // FIXED: Case-insensitive extension matching
+        const fileItems = allItems.filter(item => 
             item.type === 'file' && item.name.toLowerCase().endsWith(cat.ext.toLowerCase())
         );
 
@@ -579,7 +691,7 @@
         statNow.textContent = CATEGORIES[activeTab].label;
 
         if (errorMsg) {
-            fileCount.innerHTML = `<span style="color:var(--red)">鈿� ${escapeHtml(errorMsg)}</span>`;
+            fileCount.innerHTML = `<span style="color:var(--red)">⚠ ${escapeHtml(errorMsg)}</span>`;
         }
 
         displayFiles(files);
@@ -625,7 +737,6 @@
 
     function showUnlockOverlay() {
         unlockOverlay.classList.add('active');
-        // Auto-hide and redirect after 2.5 seconds
         setTimeout(() => {
             unlockOverlay.classList.remove('active');
         }, 2500);
@@ -633,7 +744,6 @@
 
     function handleUnlock(url) {
         showUnlockOverlay();
-        // Open locker in new tab after short delay
         setTimeout(() => {
             window.open(url, '_blank');
         }, 800);
@@ -651,7 +761,7 @@
             <div class="file-info">
                 <div class="file-name">Get File Hosts</div>
                 <div class="file-meta">
-                    <span class="premium-tag">PREMIUM</span> 路 Unlock all server endpoints 路 Updated daily
+                    <span class="premium-tag">PREMIUM</span> · Unlock all server endpoints · Updated daily
                 </div>
             </div>
             <div class="file-actions">
@@ -672,23 +782,21 @@
             fileCount.textContent = '0 files found';
             return;
         }
-        
+
         const cat = CATEGORIES[activeTab];
         const midPoint = Math.floor(list.length / 2);
         const showSmartlink = list.length >= 3;
-        
+
         let html = '';
         list.forEach((file, i) => {
             const rawUrl = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/${CONFIG.branch}/${encodeURIComponent(file.path)}`;
             const locked = isLockedFile(file.fullName);
-            
-            // Insert Smartlink card at midpoint
+
             if (showSmartlink && i === midPoint) {
                 html += renderSmartlinkCard();
             }
-            
+
             if (locked) {
-                // OGAds locked file
                 html += `
                 <div class="file-card locked" data-index="${i}">
                     <div class="file-icon">
@@ -700,7 +808,7 @@
                     <div class="file-info">
                         <div class="file-name">${escapeHtml(file.name)}</div>
                         <div class="file-meta">
-                            <span class="premium-tag">馃敀 PREMIUM</span> 路 ${cat.ext.toUpperCase().slice(1)} 路 ${cat.label} 路 ${formatSize(file.size)} 路 ${escapeHtml(file.timeAgo)}
+                            <span class="premium-tag">🔒 PREMIUM</span> · ${cat.ext.toUpperCase().slice(1)} · ${cat.label} · ${formatSize(file.size)} · ${escapeHtml(file.timeAgo)}
                         </div>
                     </div>
                     <div class="file-actions">
@@ -714,7 +822,6 @@
                     </div>
                 </div>`;
             } else {
-                // Free direct download
                 html += `
                 <div class="file-card" data-index="${i}">
                     <div class="file-icon">
@@ -722,7 +829,7 @@
                     </div>
                     <div class="file-info">
                         <div class="file-name">${escapeHtml(file.name)}</div>
-                        <div class="file-meta">${cat.ext.toUpperCase().slice(1)} 路 ${cat.label} 路 ${formatSize(file.size)} 路 <span class="time-ago">${escapeHtml(file.timeAgo)}</span> 路 ${escapeHtml(file.dateStr)}</div>
+                        <div class="file-meta">${cat.ext.toUpperCase().slice(1)} · ${cat.label} · ${formatSize(file.size)} · <span class="time-ago">${escapeHtml(file.timeAgo)}</span> · ${escapeHtml(file.dateStr)}</div>
                     </div>
                     <div class="file-actions">
                         <button class="btn btn-download" onclick="downloadFile('${rawUrl}', '${escapeHtml(file.fullName)}', this)" title="Download ${escapeHtml(file.fullName)}">
@@ -733,7 +840,7 @@
                 </div>`;
             }
         });
-        
+
         filesList.innerHTML = html;
         fileCount.textContent = `${list.length} file${list.length !== 1 ? 's' : ''} indexed`;
     }
@@ -801,4 +908,4 @@
     loadAllCategories();
     </script>
 </body>
-    </html> 
+            </html> 
